@@ -7,13 +7,25 @@
           - virtualenv
         update_cache: yes
       become: yes
-    - name: Installing dependencies with pip (Django and DjangoREST)
+    - name: Installing dependencies with pip (Django and Django rest)
       pip:
         virtualenv: /home/ubuntu/tcc/venv
         name:
           - django
           - djangorestframework
+    - name: Creating a Django project
+      shell: ". /home/ubuntu/tcc/venv/bin/activate; django-admin startproject setup /home/ubuntu/tcc"
+      # This is needed to avoid the error "No such file or directory" or when the project already exists
+      ignore_errors: yes
+    - name: Updating hosts in settings.py
+      lineinfile:
+        path: /home/ubuntu/tcc/setup/settings.py
+        regexp: "ALLOWED_HOSTS"
+        line: 'ALLOWED_HOSTS = ["*"]'
+        # This is needed to avoid the error "No matches found"
+        backrefs: yes
 
+    # Initial Example
     # - name: Creating a new file
     #   copy:
     #     dest: /home/ubuntu/index.html
