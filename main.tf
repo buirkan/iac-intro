@@ -17,8 +17,13 @@ resource "aws_instance" "app_server" {
   ami           = "ami-05134c8ef96964280"
   instance_type = "t2.micro"
   key_name      = "iac"
-
+  # user_data     = <<-EOF
+  #   #!/bin/bash
+  #   cd /home/ubuntu
+  #   echo "Testing" > index.html
+  #   nohup busybox httpd -f -p 8080 &
+  #   EOF
   tags = {
-    Name = "Primeira instancia"
+    Name = "Terraform Ansible Python"
   }
 }
